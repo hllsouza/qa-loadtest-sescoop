@@ -83,6 +83,7 @@ export default function () {
 
   group("present active lists", () => {
     act_list.getActivitiesList(auth.getToken(), me.getId());
+    sleep(1);
   })
 
   group("register participant in the activity", () => {
