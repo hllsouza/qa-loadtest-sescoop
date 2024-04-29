@@ -8,7 +8,6 @@ export default class Me {
     this.email = "";
     this.cpf = "";
     this.name = "";
-    this.phone = "";
   }
 
   getByMe(token) {
@@ -24,7 +23,6 @@ export default class Me {
     this.email = response.json("email");
     this.cpf = response.json("cpf");
     this.name = response.json("name");
-    this.phone = response.json("phone");
     check(response, {
       "is status 200": () => response.status === 200,
     });
@@ -44,9 +42,5 @@ export default class Me {
 
   getName() {
     return this.name;
-  }
-
-  getPhone() {
-    return this.phone;
   }
 }

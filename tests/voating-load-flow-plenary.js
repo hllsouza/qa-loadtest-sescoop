@@ -3,12 +3,8 @@ import { SharedArray } from "k6/data";
 import { randomItem } from 'https://jslib.k6.io/k6-utils/1.1.0/index.js';
 import Auth from "../requests/authenticate.js";
 import Me from "../requests/me.js";
-import EventsUser from "../requests/events_by_user_id.js";
 import ParticipantById from "../requests/participant_by_user_id.js";
-import Terms from "../requests/accept_terms_use.js";
 import ActivitiesList from "../requests/activities_list.js";
-import RegisterActivity from "../requests/register_activity.js";
-import RemoveParticipant from "../requests/remove_participant.js";
 import Plenary from "../requests/plenary_vote.js";
 
 const userData = new SharedArray("userCredentials", function () {
@@ -50,12 +46,8 @@ export default function () {
 
   let auth = new Auth();
   let me = new Me();
-  let events_by_user = new EventsUser();
   let participant_by_user_id = new ParticipantById();
-  let terms = new Terms();
   let act_list = new ActivitiesList();
-  let register = new RegisterActivity();
-  let remove = new RemoveParticipant();
   let vote_plenary = new Plenary();
 
   group("user authentication", () => {
@@ -67,18 +59,8 @@ export default function () {
     me.getByMe(auth.getToken());
   })
 
-  group("get events by user id", () => {
-    events_by_user.getEventsUserById(auth.getToken(), me.getId());
-    sleep(1);
-  })
-
   group("get participant by user id", () => {
     participant_by_user_id.getParticipantByUserId(auth.getToken(), me.getId());
-  })
-
-  group("aceept use terms", () => {
-    terms.aceept_terms(auth.getToken(), me.getId(), me.getName(), me.getEmail(), me.getPhone(), me.getCpf());
-    sleep(1);
   })
 
   group("present active lists", () => {
@@ -86,18 +68,8 @@ export default function () {
     sleep(1);
   })
 
-//   group("register participant in the activity", () => {
-//     register.registerActivity(auth.getToken(), me.getId(), atividadeId);
-//     sleep(1)
-//   })
-
   group("carry out voting in plenary-type activities", () => {
     vote_plenary.plenaryVote(auth.getToken(), atividadeId, participant_by_user_id.getUserId());
     sleep(1)
   })
-
-//   group("remove participant in the activity", () => {
-//     remove.removeParticipant(auth.getToken(), atividadeId, me.getId());
-//     sleep(1)
-//   })
 }
