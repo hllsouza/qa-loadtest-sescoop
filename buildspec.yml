@@ -8,7 +8,7 @@ phases:
   build: 
     commands:
       - echo Run performance tests..
-      - docker run -i -v $(pwd)/utils:/utils grafana/k6 run - < tests/voating-load-flow-plenary.js
+      - docker run -i -v $(pwd):/project grafana/k6 run - < tests/voating-load-flow-plenary.js
   post_build:
     commands:
       - echo Performance test complete
