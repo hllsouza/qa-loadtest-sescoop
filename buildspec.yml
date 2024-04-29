@@ -1,0 +1,14 @@
+version: 0.1
+
+phases: 
+  pre_build:
+    commands:
+      - echo Pull grafana/k6 image..
+      - docker pull grafana/k6
+  build: 
+    commands:
+      - echo Run performance tests..
+      - docker run -i -v $(pwd)/utils:/utils grafana/k6 run - < tests/voating-load-flow-plenary.js
+  post_build:
+    commands:
+      - echo Performance test complete
