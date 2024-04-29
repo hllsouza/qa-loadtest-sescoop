@@ -12,6 +12,7 @@ export default class RemoveParticipant {
     };
 
     const response = http.del(url, null, params);
+    console.log(response.body)
     check(response, {
       "is status 200": () => response.status === 200,
     });

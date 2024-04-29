@@ -40,7 +40,7 @@ export const options = {
 
 export default function () {
   let user = userData[__VU % userData.length];
-  const atividadeIds = [26];
+  const atividadeIds = [38, 37, 35, 40, 41, 39, 36, 42];
   const atividadeId = randomItem(atividadeIds);
 
   const payload = JSON.stringify({
@@ -86,18 +86,18 @@ export default function () {
     sleep(1);
   })
 
-//   group("register participant in the activity", () => {
-//     register.registerActivity(auth.getToken(), me.getId(), atividadeId);
-//     sleep(1)
-//   })
+  group("register participant in the activity", () => {
+    register.registerActivity(auth.getToken(), me.getId(), atividadeId);
+    sleep(1)
+  })
 
   group("carry out voting in plenary-type activities", () => {
     vote_plenary.plenaryVote(auth.getToken(), atividadeId, participant_by_user_id.getUserId());
     sleep(1)
   })
 
-//   group("remove participant in the activity", () => {
-//     remove.removeParticipant(auth.getToken(), atividadeId, me.getId());
-//     sleep(1)
-//   })
+  group("remove participant in the activity", () => {
+    remove.removeParticipant(auth.getToken(), atividadeId, me.getId());
+    sleep(1)
+  })
 }
