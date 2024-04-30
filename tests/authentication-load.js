@@ -9,8 +9,13 @@ const userData = new SharedArray("userCredentials", function () {
 export const options = {
   // Key configurations for Stress in this section
   stages: [
-    { duration: "10s", target: 10 },
-    { duration: "10s", target: 0 },
+    { duration: '2m', target: 2000 }, 
+    { duration: '5m', target: 2000 },
+    { duration: '2m', target: 3000 }, 
+    { duration: '5m', target: 3000 },
+    { duration: '2m', target: 4000 }, 
+    { duration: '5m', target: 4000 },
+    { duration: '5m', target: 0 },     
   ],
   thresholds: {
     http_req_duration: ["p(95)<2000"], //95% das reqs devem responder em até 2s
