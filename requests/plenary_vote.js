@@ -21,7 +21,6 @@ export default class Plenary {
     };
 
     const response = http.post(url, payload, params);
-    console.log(response.body);
     check(response, {
       "is status 200": () => response.status === 200,
     });

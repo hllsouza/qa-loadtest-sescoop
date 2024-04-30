@@ -17,6 +17,7 @@ export default class ParticipantUserId {
 
     const response = http.get(url, params);
     this.user_id = response.json("id");
+    console.log(response.body)
     check(response, {
       "is status 200": () => response.status === 200,
     });
