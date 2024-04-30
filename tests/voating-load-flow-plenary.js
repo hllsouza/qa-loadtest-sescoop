@@ -57,6 +57,7 @@ export default function () {
 
   group("get user by me", () => {
     me.getByMe(auth.getToken());
+    sleep(1);
   })
 
   group("get participant by user id", () => {
