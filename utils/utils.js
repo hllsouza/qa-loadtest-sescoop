@@ -1,7 +1,7 @@
 export default class Utils {
 
     static getBaseUrl() {
-      return 'https://cbc.ocb.coopersystem.com.br' 
+      return 'https://hom.administracao.ocb.coopersystem.com.br' 
     }
     
 }
