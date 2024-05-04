@@ -1,9 +1,14 @@
 import { check } from "k6";
 import http from "k6/http";
+import httpx from "https://jslib.k6.io/httpx/0.0.6/index.js";
 import Utils from "../utils/utils.js";
 
 export default class Plenary {
-  plenaryVote(token, pauta, participant) {
+  constructor() {
+    this.client = new httpx.Client();
+  }
+
+  async plenaryVote(token, pauta, participant) {
     const url = `${Utils.getBaseUrl()}/atividades/atividades/votar`;
     const payload = JSON.stringify({
       tipo: "plenaria",
@@ -20,7 +25,7 @@ export default class Plenary {
       },
     };
 
-    const response = http.post(url, payload, params);
+    const response = await this.client.post(url, payload, params);
     check(response, {
       "is status 200": () => response.status === 200,
     });

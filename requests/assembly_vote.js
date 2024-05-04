@@ -6,7 +6,7 @@ export default class Plenary {
   plenaryVote(token, pauta, participant) {
     const url = `${Utils.getBaseUrl()}/atividades/atividades/votar`;
     const payload = JSON.stringify({
-      tipo: "plenaria",
+      tipo: "plenaria", //corrigir o tipo de evento
       pauta_id: pauta,
       participante_id: participant,
       propostas: [293, 303, 304, 302, 305, 294, 295, 296, 297, 298],

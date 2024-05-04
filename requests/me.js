@@ -1,16 +1,15 @@
 import { check } from "k6";
 import http from "k6/http";
+import httpx from 'https://jslib.k6.io/httpx/0.0.6/index.js';
 import Utils from "../utils/utils.js";
 
 export default class Me {
   constructor() {
     this.id = "";
-    this.email = "";
-    this.cpf = "";
-    this.name = "";
+    this.client = new httpx.Client();
   }
 
-  getByMe(token) {
+  async getByMe(token) {
     const url = `${Utils.getBaseUrl()}/autenticador/user/me`;
     const params = {
       headers: {
@@ -18,11 +17,9 @@ export default class Me {
       },
     };
 
-    const response = http.get(url, params);
+    const response = await this.client.get(url, params);
+    console.log(response.body)
     this.id = response.json("id");
-    this.email = response.json("email");
-    this.cpf = response.json("cpf");
-    this.name = response.json("name");
     check(response, {
       "is status 200": () => response.status === 200,
     });
@@ -30,17 +27,5 @@ export default class Me {
 
   getId() {
     return this.id;
-  }
-
-  getEmail() {
-    return this.email;
-  }
-
-  getCpf() {
-    return this.cpf;
-  }
-
-  getName() {
-    return this.name;
   }
 }

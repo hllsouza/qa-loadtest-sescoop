@@ -77,7 +77,7 @@ export default function () {
   })
 
   group("aceept use terms", () => {
-    terms.aceept_terms(auth.getToken(), me.getId(), me.getName(), me.getEmail(), me.getPhone(), me.getCpf());
+    terms.aceept_terms(auth.getToken(), me.getId(), me.getName(), me.getEmail(), me.getPhone(), me.getusername());
     sleep(1);
   })
 

@@ -3,12 +3,12 @@ import http from "k6/http";
 import Utils from "../utils/utils.js";
 
 export default class Terms {
-  aceept_terms(token, id, name, email, phone, cpf) {
+  aceept_terms(token, id, name, email, phone, username) {
     const payload = JSON.stringify({
       nome: name,
       email: email,
       phone: phone,
-      cpf: cpf,
+      username: username,
     });
     const url = `${Utils.getBaseUrl()}/autenticador/user/${id}`;
     const params = {

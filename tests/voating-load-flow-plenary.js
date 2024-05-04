@@ -1,10 +1,9 @@
 import { group, sleep } from "k6";
 import { SharedArray } from "k6/data";
-import { randomItem } from 'https://jslib.k6.io/k6-utils/1.1.0/index.js';
+import { randomItem } from "https://jslib.k6.io/k6-utils/1.1.0/index.js";
 import Auth from "../requests/authenticate.js";
 import Me from "../requests/me.js";
 import ParticipantById from "../requests/participant_by_user_id.js";
-import ActivitiesList from "../requests/activities_list.js";
 import Plenary from "../requests/plenary_vote.js";
 
 const userData = new SharedArray("userCredentials", function () {
@@ -14,13 +13,14 @@ const userData = new SharedArray("userCredentials", function () {
 export const options = {
   // Key configurations for Stress in this section
   stages: [
-    { duration: '2m', target: 2000 }, 
-    { duration: '5m', target: 2000 },
-    { duration: '2m', target: 3000 }, 
-    { duration: '5m', target: 3000 },
-    { duration: '2m', target: 4000 }, 
-    { duration: '5m', target: 4000 },
-    { duration: '5m', target: 0 },     
+    { duration: "10s", target: 10 },
+    { duration: "10s", target: 0 },
+    // { duration: "5m", target: 2000 },
+    // { duration: "2m", target: 3000 },
+    // { duration: "5m", target: 3000 },
+    // { duration: "2m", target: 4000 },
+    // { duration: "5m", target: 4000 },
+    // { duration: "5m", target: 0 },
   ],
   thresholds: {
     http_req_duration: ["p(95)<2000"], //95% das reqs devem responder em até 2s
@@ -34,7 +34,7 @@ export const options = {
   },
 };
 
-export default function () {
+export default async function () {
   let user = userData[__VU % userData.length];
   const atividadeIds = [26];
   const atividadeId = randomItem(atividadeIds);
@@ -47,30 +47,31 @@ export default function () {
   let auth = new Auth();
   let me = new Me();
   let participant_by_user_id = new ParticipantById();
-  let act_list = new ActivitiesList();
   let vote_plenary = new Plenary();
 
-  group("user authentication", () => {
-    auth.access(payload);
+  await group("user authentication", async () => {
+    await auth.access(payload);
     sleep(1);
   });
 
-  group("get user by me", () => {
-    me.getByMe(auth.getToken());
+  await group("get user by me", async () => {
+    await me.getByMe(auth.getToken());
     sleep(1);
-  })
+  });
 
-  group("get participant by user id", () => {
-    participant_by_user_id.getParticipantByUserId(auth.getToken(), me.getId());
-  })
+  await group("get participant by user id", async () => {
+    await participant_by_user_id.getParticipantByUserId(
+      auth.getToken(),
+      me.getId()
+    );
+  });
 
-  group("present active lists", () => {
-    act_list.getActivitiesList(auth.getToken(), me.getId());
+  await group("carry out voting in plenary-type activities", async () => {
+    await vote_plenary.plenaryVote(
+      auth.getToken(),
+      atividadeId,
+      participant_by_user_id.getUserId()
+    );
     sleep(1);
-  })
-
-  group("carry out voting in plenary-type activities", () => {
-    vote_plenary.plenaryVote(auth.getToken(), atividadeId, participant_by_user_id.getUserId());
-    sleep(1)
-  })
+  });
 }
