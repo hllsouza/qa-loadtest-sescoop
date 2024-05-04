@@ -13,14 +13,13 @@ const userData = new SharedArray("userCredentials", function () {
 export const options = {
   // Key configurations for Stress in this section
   stages: [
-    { duration: "10s", target: 10 },
-    { duration: "10s", target: 0 },
-    // { duration: "5m", target: 2000 },
-    // { duration: "2m", target: 3000 },
-    // { duration: "5m", target: 3000 },
-    // { duration: "2m", target: 4000 },
-    // { duration: "5m", target: 4000 },
-    // { duration: "5m", target: 0 },
+    { duration: "5m", target: 2000 },
+    { duration: "2m", target: 2000 },
+    { duration: "2m", target: 3000 },
+    { duration: "5m", target: 3000 },
+    { duration: "2m", target: 4000 },
+    { duration: "5m", target: 4000 },
+    { duration: "5m", target: 0 },
   ],
   thresholds: {
     http_req_duration: ["p(95)<2000"], //95% das reqs devem responder em até 2s
@@ -49,29 +48,18 @@ export default async function () {
   let participant_by_user_id = new ParticipantById();
   let vote_plenary = new Plenary();
 
-  await group("user authentication", async () => {
-    await auth.access(payload);
-    sleep(1);
-  });
+  // Authentication
+  auth.access(payload);
+  sleep(1);
 
-  await group("get user by me", async () => {
-    await me.getByMe(auth.getToken());
-    sleep(1);
-  });
+  // Get user details
+  me.getByMe(auth.getToken());
+  sleep(1);
 
-  await group("get participant by user id", async () => {
-    await participant_by_user_id.getParticipantByUserId(
-      auth.getToken(),
-      me.getId()
-    );
-  });
+  // Get participant ID
+  participant_by_user_id.getParticipantByUserId(auth.getToken(), me.getId());
 
-  await group("carry out voting in plenary-type activities", async () => {
-    await vote_plenary.plenaryVote(
-      auth.getToken(),
-      atividadeId,
-      participant_by_user_id.getUserId()
-    );
-    sleep(1);
-  });
+  // Perform voting
+  vote_plenary.plenaryVote(auth.getToken(), atividadeId, participant_by_user_id.getUserId());
+  sleep(1);
 }

@@ -1,12 +1,10 @@
 import { check } from "k6";
 import http from "k6/http";
-import httpx from 'https://jslib.k6.io/httpx/0.0.6/index.js';
 import Utils from "../utils/utils.js";
 
 export default class Me {
   constructor() {
     this.id = "";
-    this.client = new httpx.Client();
   }
 
   async getByMe(token) {
@@ -17,7 +15,7 @@ export default class Me {
       },
     };
 
-    const response = await this.client.get(url, params);
+    const response = await http.asyncRequest('GET', url, params);
     console.log(response.body)
     this.id = response.json("id");
     check(response, {
