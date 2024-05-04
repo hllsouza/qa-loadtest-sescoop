@@ -15,7 +15,7 @@ export default class ParticipantUserId {
       },
     };
 
-    const response = await http.asyncRequest('GET', url, params);
+    const response = await http.asyncRequest('GET', url, null, params);
     this.user_id = response.json("id");
     console.log(response.body);
     check(response, {
