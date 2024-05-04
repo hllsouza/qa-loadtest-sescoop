@@ -44,9 +44,13 @@ export default async function () {
   });
 
   let auth = new Auth();
+  sleep(2)
   let me = new Me();
+  sleep(2)
   let participant_by_user_id = new ParticipantById();
+  sleep(2)
   let vote_plenary = new Plenary();
+  sleep(2)
 
   // Authentication
   auth.access(payload);
