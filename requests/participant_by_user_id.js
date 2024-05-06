@@ -14,10 +14,9 @@ export default class ParticipantUserId {
         Authorization: `Bearer ${token}`,
       },
     };
-
     const response = await http.asyncRequest('GET', url, null, params);
-    this.user_id = response.json("id");
-    console.log(response.body);
+    const responseData = response.json();
+    this.user_id = responseData.id;
     check(response, {
       "is status 200": () => response.status === 200,
     });
