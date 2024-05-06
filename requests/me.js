@@ -14,10 +14,9 @@ export default class Me {
         Authorization: `Bearer ${token}`,
       },
     };
-
-    const response = await http.asyncRequest('GET', url, params);
-    console.log(response.body)
-    this.id = response.json("id");
+    const response = await http.asyncRequest('GET', url, null, params);
+    const responseData = response.json();
+    this.id = responseData.id;
     check(response, {
       "is status 200": () => response.status === 200,
     });
