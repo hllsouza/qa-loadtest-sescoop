@@ -33,10 +33,8 @@ export const options = {
   },
 };
 
-export default function () {
+export default async function () {
   let user = userData[__VU % userData.length];
-  const atividadeIds = [26];
-  const atividadeId = randomItem(atividadeIds);
 
   const payload = JSON.stringify({
     username: user.username.toString(),
@@ -44,26 +42,27 @@ export default function () {
   });
 
   let auth = new Auth();
-  sleep(2)
+  sleep(1)
   let me = new Me();
-  sleep(2)
+  sleep(1)
   let participant_by_user_id = new ParticipantById();
-  sleep(2)
+  sleep(1)
   let vote_plenary = new Plenary();
-  sleep(2)
+  sleep(1)
 
   // Authentication
-  auth.access(payload);
+  await auth.access(payload);
   sleep(1);
 
   // Get user details
-  me.getByMe(auth.getToken());
+  await me.getByMe(auth.getToken());
   sleep(1);
 
   // Get participant ID
-  participant_by_user_id.getParticipantByUserId(auth.getToken(), me.getId());
+  await participant_by_user_id.getParticipantByUserId(auth.getToken(), me.getId());
+  sleep(1);
 
-  // Perform voting
-  vote_plenary.plenaryVote(auth.getToken(), atividadeId, participant_by_user_id.getUserId());
+  // // Perform voting
+  await vote_plenary.plenaryVote(auth.getToken(), participant_by_user_id.getUserId());
   sleep(1);
 }
