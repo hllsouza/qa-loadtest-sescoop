@@ -19,7 +19,7 @@ export const options = {
     { duration: "5m", target: 3000 },
     { duration: "2m", target: 4000 },
     { duration: "5m", target: 4000 },
-    { duration: "2m", target: 0 },
+    { duration: "5m", target: 0 },
   ],
   thresholds: {
     http_req_duration: ["p(95)<2000"], //95% das reqs devem responder em até 2s
